@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Session Words</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'session_words/css/main.css'  %}" media="screen">
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <h1>Add a new word</h1>
+            <form action="session_words/add" method="post">
+                {% csrf_token %}
+                <input type="text" name="word"><br>
+                <p>Choose a Color</p>
+                <input type="radio" name="color" value="Red">Red<br>
+                <input type="radio" name="color" value="Green">Green<br>
+                <input type="radio" name="color" value="Blue">Blue<br><br>
+                <input type="checkbox" name="bigfonts">show in BIG fonts!<br><br>
+                <input type="submit" value="Add to Session">
+            </form>
+        </div>
+        <div class="container">
+            <form action="session_words/clear" method="post">
+                {% csrf_token %}
+                <br><input type="submit" value="Clear Session">
+            </form>
+            <br>
+            {% for object in request.session.words %}
+            <p class="{{object.color}} {{object.fontsize}}">{{object.word}} <span id="date"> - {{object.timestamp}}</span></p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
