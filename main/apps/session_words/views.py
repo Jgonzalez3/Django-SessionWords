@@ -7,6 +7,7 @@ from datetime import datetime
 
 words = []
 def index(request):
+    print words
     return render(request, "session_words/index.html")
 def add(request):
     content = {
@@ -15,17 +16,18 @@ def add(request):
         "fontsize": request.POST.get("bigfonts"),
         "color": request.POST.get('color')
     }
+    
     if request.method == "POST":
         word = request.POST['word']
         color = request.POST.get('color')
-        request.session['largefont'] = request.POST.get('bigfonts')
         words.append(content)
         request.session['words'] = words
 
         return redirect("/")
 def clear(request):
     if request.method == "POST":
-        words = []
-        request.session['words'] = words
-        print words
+        if len(words) != 0:
+            for item in range(0,len(words)):
+                words.pop()
+        request.session["words"] = words
         return redirect("/")
